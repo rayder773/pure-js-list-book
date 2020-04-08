@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Порнократия",
+    "img": ["https://img.yakaboo.ua/media/catalog/product/cache/1/image/546x/00c1a1eab9920e00d38dc8798e6142c9/4/3/439080_30157158.jpg"],
+    "publishing_date": "2005",
+    "authors": ["Катрин Брейя"],
+    "genre": ["Публицистика"],
+    "publishing_name": "Росмэн",
+    "publishing_address": "127521, г. Москва, ул. Шереметьевская, д. 47, ст. м. Марьина Роща, Бутырская",
+    "publishing_phone": "8 (800) 100-53-38"
+  },
+  {
+    "title": "Nokia. Весь невероятный опыт компании в одной книге",
+    "img": [
+      "https://cdn.eksmo.ru/v2/ITD000000001033419/COVER/cover1__w600.jpg",
+      "https://cdn.eksmo.ru/v2/ITD000000001033419/COVER/cover4__w600.jpg"
+    ],
+    "publishing_date": "2017",
+    "authors": ["Ив Доз", "Кили Уилсон"],
+    "genre": ["Мемуары"],
+    "publishing_name": "ЭКСМО",
+    "publishing_address": "г. Москва, ул. Зорге, д.1.",
+    "publishing_phone": "+7 (495) 268-08-41"
+  },
+  {
+    "title": "Девушка в темной реке",
+    "img": [
+      "https://cdn.eksmo.ru/v2/ITD000000001078898/COVER/cover1__w600.jpg",
+      "https://cdn.eksmo.ru/v2/ITD000000001078898/COVER/cover4__w600.jpg"
+    ],
+    "publishing_date": "13 марта 2020",
+    "authors": ["Лорет Энн Уайт"],
+    "genre": ["Детектив"],
+    "publishing_name": "ЭКСМО",
+    "publishing_address": "г. Москва, ул. Зорге, д.1.",
+    "publishing_phone": "+7 (495) 268-08-41"
+  }
+]
