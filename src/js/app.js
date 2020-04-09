@@ -9,6 +9,7 @@ import { Route } from "./route";
             new Route('edit', 'edit.html', true),
             new Route('main', 'main.html')
         ]);
+        router.goToRoute();
     }
     init();
 }());

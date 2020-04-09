@@ -16,9 +16,16 @@
     align-items: center;
     font-size: 24px;
     padding: 18px;
+    position: relative;
 }
 #app details summary div {
     text-decoration: underline;
+}
+#app details summary .close-btn {
+    text-decoration: underline;
+    position: absolute;
+    right: 16px;
+    cursor: pointer;
 }
 #app .book-content {
     display: flex;
@@ -49,5 +56,10 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 24px;
+}
+
+.edit-btn {
+    text-decoration: underline;
+    cursor: pointer;
 }
 

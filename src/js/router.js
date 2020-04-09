@@ -35,16 +35,15 @@ Router.prototype = {
       for (let i = 0, length = r.length; i < length; i++) {
         const route = r[i];
         if (route.isActiveRoute(window.location.hash.substr(1))) {
-          scope.goToRoute(route.htmlName);
+          const test = scope.goToRoute(route.htmlName);
 
           setTimeout(() => {
             if (route.name === 'main') {
-              console.log('after')
               renderMain();
             } else if (route.name === 'edit') {
               renderEdit();
             }
-          }, 100)
+          }, 100);
         }
       }
     } else {
@@ -68,5 +67,8 @@ Router.prototype = {
       xhttp.open('GET', url, true);
       xhttp.send();
     })(this);
-  }
+  },
 };
+
+
+
