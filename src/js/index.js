@@ -3,4 +3,4 @@ import './router';
 import './app';
 import './components';
 
-import '../styles.css';
+import '../styles.scss';

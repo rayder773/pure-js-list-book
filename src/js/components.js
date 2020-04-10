@@ -87,7 +87,6 @@ export const renderEdit = () => {
   const book = bookList[bootNumber];
 
   for (let b in book) {
-    console.log(b)
     document.getElementById(b).value = book[b];
   }
 

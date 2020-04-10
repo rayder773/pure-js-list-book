@@ -30,20 +30,21 @@ Router.prototype = {
     })(this, r);
     this.hasChanged(this, r);
   },
-  hasChanged: function (scope, r) {
+  hasChanged: async function (scope, r) {
     if (window.location.hash.length > 0) {
       for (let i = 0, length = r.length; i < length; i++) {
         const route = r[i];
         if (route.isActiveRoute(window.location.hash.substr(1))) {
-          const test = scope.goToRoute(route.htmlName);
+          scope.goToRoute(route.htmlName);
+          const res = await fetch(`view/${route.htmlName}`, {
+            method: 'GET'
+          });
 
-          setTimeout(() => {
-            if (route.name === 'main') {
-              renderMain();
-            } else if (route.name === 'edit') {
-              renderEdit();
-            }
-          }, 100);
+          if (route.name === 'main') {
+            renderMain();
+          } else if (route.name === 'edit') {
+            renderEdit();
+          }
         }
       }
     } else {
@@ -58,6 +59,7 @@ Router.prototype = {
   goToRoute: function (htmlName) {
     (function (scope) {
       const url = 'views/' + htmlName;
+      console.log(url)
       const xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
