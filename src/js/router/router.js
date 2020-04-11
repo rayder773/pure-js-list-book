@@ -1,6 +1,7 @@
 'use strict';
 
-import {renderEdit, renderMain} from "./components";
+import List from '../components/List';
+import BookForm from "../components/BookForm/BookForm";
 
 export function Router(routes) {
   try {
@@ -24,6 +25,7 @@ Router.prototype = {
   init: function () {
     const r = this.routes;
     (function (scope, r) {
+
       window.addEventListener('hashchange', function (e) {
         scope.hasChanged(scope, r);
       });
@@ -35,15 +37,16 @@ Router.prototype = {
       for (let i = 0, length = r.length; i < length; i++) {
         const route = r[i];
         if (route.isActiveRoute(window.location.hash.substr(1))) {
+
           scope.goToRoute(route.htmlName);
+
           const res = await fetch(`view/${route.htmlName}`, {
             method: 'GET'
           });
-
           if (route.name === 'main') {
-            renderMain();
+            List();
           } else if (route.name === 'edit') {
-            renderEdit();
+            BookForm();
           }
         }
       }
@@ -51,6 +54,7 @@ Router.prototype = {
       for (let i = 0, length = r.length; i < length; i++) {
         const route = r[i];
         if (route.default) {
+          console.log(route.default)
           scope.goToRoute(route.htmlName);
         }
       }

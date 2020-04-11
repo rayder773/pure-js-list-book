@@ -1,6 +1,7 @@
-import './route';
-import './router';
-import './app';
-import './components';
+import './router'
+import './components/NavBar';
+import './components/List';
+import './components/BookForm';
+import './util/db';
 
-import '../styles.scss';
+import '../assets/styles/global.scss';

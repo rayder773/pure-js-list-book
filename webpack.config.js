@@ -1,11 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   mode: 'development',
   entry: {
-    index: './src/js/index.js'
+    index: './src/app.js'
   },
   devtool: 'inline-source-map',
   plugins: [
@@ -14,16 +15,6 @@ module.exports = {
       title: 'Main html',
       template: "./src/index.html",
       filename: "index.html"
-    }),
-    new HtmlWebpackPlugin({
-      title: 'about html',
-      template: "./src/views/edit.html",
-      filename: "views/edit.html"
-    }),
-    new HtmlWebpackPlugin({
-      title: 'about html',
-      template: "./src/views/main.html",
-      filename: "views/main.html"
     }),
   ],
   output: {
@@ -38,12 +29,38 @@ module.exports = {
       {
         test: /\.s[ac]ss$/i,
         use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader',
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [
+                autoprefixer({
+                  browsers:['ie >= 8', 'last 4 version']
+                })
+              ],
+              sourceMap: true
+            }
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true
+            }
+          }
+        ],
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
         ],
       },
     ],

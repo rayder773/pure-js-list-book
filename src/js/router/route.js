@@ -23,4 +23,4 @@ Route.prototype = {
     isActiveRoute: function (hashedPath) {
         return hashedPath.replace('#', '') === this.name;
     }
-}
+};
