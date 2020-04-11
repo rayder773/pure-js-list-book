@@ -1,8 +1,7 @@
 @import "./variables";
 
-@mixin button {
+@mixin button () {
   background: $button_color;
-  //width: 100px;
   text-decoration: none;
   color: white;
   height: 40px;
@@ -11,4 +10,15 @@
   justify-content: center;
   padding: 0 20px;
   border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    background: #52c9ef;
+  }
+
+  &:active {
+    background: #34a4ef;
+  }
 }

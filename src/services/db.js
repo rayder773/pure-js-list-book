@@ -5,12 +5,12 @@ export const getBookList = () => {
 };
 
 export const setBookList = (list) => {
-  localStorage.setItem('bookList', JSON.stringify(list));
+  return localStorage.setItem('bookList', JSON.stringify(list));
 };
 
 export const initDb = () => {
   const list = getBookList();
-  if(list !== undefined) {
+  if(list === null) {
     setBookList(bookList);
   }
 };

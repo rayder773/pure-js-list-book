@@ -1,3 +1,5 @@
+@import "./src/assets/styles/mixins";
+
 .book-section {
   max-width: 1100px;
   margin: 0 auto;
@@ -20,13 +22,6 @@
 
       div {
         text-decoration: underline;
-      }
-
-      .close-btn {
-        text-decoration: underline;
-        position: absolute;
-        right: 16px;
-        cursor: pointer;
       }
     }
   }
@@ -68,7 +63,28 @@
   }
 }
 
-.edit-btn {
-  text-decoration: underline;
-  cursor: pointer;
+.book-content-buttons {
+  display: flex;
+  flex-direction: row !important;
 }
+
+.edit-btn {
+  margin-right: 16px;
+}
+
+.delete-btn {
+  @include button();
+  background: #ff434b;
+  &:hover {
+    background: #ff6261;
+  }
+  &:active {
+    background: #ff3824;
+  }
+
+}
+
+.edit-btn {
+  @include button();
+}
+

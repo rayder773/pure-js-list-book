@@ -77,6 +77,7 @@ export default () => {
   });
   formElement.append(mainForm);
 
+
   const book = bookList[bootNumber];
 
   for (let b in book) {

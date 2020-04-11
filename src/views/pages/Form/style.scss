@@ -1,0 +1,28 @@
+@import "./src/assets/styles/mixins";
+
+.main-form-input-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 36px;
+  position: relative;
+  input {
+    width: 300px;
+    height: 30px;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding-left: 15px;
+    outline: none;
+  }
+  label {
+    margin-bottom: 5px;
+  }
+}
+
+
+#submit_btn {
+  @include button();
+  margin: 0 auto;
+}

@@ -1,15 +1,32 @@
-import {getIsEdit, getBookNumber, setIsEdit, setBookNumber} from "../../../store";
-import {getBookList} from "../../../services/db";
+import { setIsEdit, setBookNumber } from "../../../store";
+import {getBookList, setBookList} from "../../../services/db";
+import { FORM, goToRoute } from "../../../services/goToRoute";
+import image_404 from '../../../assets/images/image_404.jpg';
 
 import './style.scss';
 
-const isEdit = getIsEdit();
-let bookList = getBookList();
-const bookNumber = getBookNumber();
+const buttonNames = {
+  delete: 'Удалить',
+  edit: 'Редактировать'
+};
+
+const label = {
+  author: 'Автор(ы): ',
+  genre: 'Жанр: ',
+  publishingDate: 'Дата издания: ',
+  publishingName: 'Название издательства: ',
+  publishingPhone: 'Контакты издательства: ',
+  publishingAddress: 'Адрес издательства: ',
+};
+
+const setImage = (img, title) => {
+  return (/^http/).test(img) ? img : '';
+};
 
 let Home = {
   render: async () => {
     let books = await getBookList();
+
     let view = ``;
 
     books.forEach((book, i) => {
@@ -17,26 +34,31 @@ let Home = {
         <div class="book-section">
           <details>
             <summary>
-              <div>${book.title}</div>
-              <div class="close-btn" attr=${i}>X</div>
+              <div>${book.title || '-'}</div>
             </summary>
             <div class="book-content">
-              <img src="${book.img[0]}" />
+              <button class="prev-img-btn" attr="${i}"> < </button>
+              <img class="book-img" id="book-img-${i}" src="${setImage(book.img[0], book.title) || image_404}" />
+              <button class="next-img-btn" attr="${i}"> > </button>
               <div class="book-description">
                 <span>
-                  <strong>Автор:</strong> ${book.authors[0]}
+                  <strong>${label.author}</strong> ${book.authors || '-'}
                 </span>
                 <span>
-                  <strong>Дата издательства:</strong> ${book.publishing_date}
+                  <strong>${label.publishingName}</strong> ${book.publishing_name || '-'}
                 </span>
                 <span>
-                  <strong>Адрес издательства:</strong> ${book.publishing_address}
+                  <strong>${label.publishingDate}</strong> ${book.publishing_date || '-'}
                 </span>
                 <span>
-                  <strong>Телефон издательства:</strong> ${book.publishing_phone}
+                  <strong>${label.publishingAddress}</strong> ${book.publishing_address || '-'}
                 </span>
                 <span>
-                  <strong class="edit-btn" attr=${i}>EDIT</strong>
+                  <strong>${label.publishingPhone}</strong> ${book.publishing_phone || '-'}
+                </span>
+                <span class="book-content-buttons">
+                  <div class="edit-btn" attr=${i}>${buttonNames.edit}</div>
+                  <div class="delete-btn" attr=${i}>${buttonNames.delete}</div>
                 </span>
               </div>
             </div>
@@ -45,17 +67,18 @@ let Home = {
         `;
     });
     return view;
-  }
-  , after_render: async () => {
-    const closeButtons = Array.from(document.getElementsByClassName('close-btn')).forEach(btn => {
-      btn.addEventListener('click', (e) => {
+  },
+  after_render: async () => {
+    const bookList = getBookList();
+
+    const closeButtons = Array.from(document.getElementsByClassName('delete-btn')).forEach(btn => {
+      btn.addEventListener('click', async (e) => {
         e.preventDefault();
         const index = e.target.attributes.attr.value;
-        const bookList = JSON.parse(localStorage.getItem('bookList'));
         bookList.splice(index, 1);
-        localStorage.setItem('bookList', JSON.stringify(bookList));
-        // listElement.innerHTML = '';
-        // renderMain()
+        setBookList(bookList);
+        document.getElementById('page_container').innerHTML = await Home.render();
+        await Home.after_render();
       })
     });
 
@@ -63,8 +86,44 @@ let Home = {
       item.addEventListener('click', (e) => {
         const index = e.target.attributes.attr.value;
         setBookNumber(index);
-        setIsEdit(true)
-        window.location.href = '/#/form';
+        setIsEdit(true);
+        goToRoute(FORM);
+      })
+    });
+
+    const nextBtn = Array.from(document.getElementsByClassName('next-img-btn')).forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const index = e.target.attributes.attr.value;
+        const bookImageElement = document.getElementById(`book-img-${index}`)
+        const bookImageUrls = bookList[index].img;
+
+        const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
+
+        if(bookImageUrls.length - 1 > indexOfBook) {
+          bookImageElement.src = bookImageUrls[indexOfBook + 1]
+        } else {
+          bookImageElement.src = bookImageUrls[0]
+        }
+      })
+    });
+
+    const prevBtn = Array.from(document.getElementsByClassName('prev-img-btn')).forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const index = e.target.attributes.attr.value;
+        const bookImageElement = document.getElementById(`book-img-${index}`)
+        const bookImageUrls = bookList[index].img;
+
+        const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
+
+        if(indexOfBook > 0) {
+          bookImageElement.src = bookImageUrls[indexOfBook - 1]
+        } else {
+          bookImageElement.src = bookImageUrls[bookImageUrls.length - 1]
+        }
       })
     });
   }

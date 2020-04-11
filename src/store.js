@@ -1,4 +1,4 @@
-let bookNumber;
+let bookNumber = null;
 let isEdit = false;
 
 export const setIsEdit = (bool) => {
