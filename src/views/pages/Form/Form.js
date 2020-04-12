@@ -160,6 +160,7 @@ let Form = {
               const parent = e.target.parentElement;
               parent.remove();
             });
+            newDiv.className = 'input-for-image-additional';
             newDiv.append(newInput, newButton);
 
             inputForImageElement.append(newDiv);
