@@ -31,3 +31,47 @@
   @include button();
   margin: 0 auto;
 }
+
+#add-input-btn {
+  width:30px;
+  height:32px;
+  background:
+    linear-gradient($button_color,$button_color) top left,
+    linear-gradient($button_color,$button_color) top right,
+    linear-gradient($button_color,$button_color) bottom left,
+    linear-gradient($button_color,$button_color) bottom right;
+  background-size: calc(50% - 1px) calc(50% - 1px);
+  background-repeat:no-repeat;
+  border:10px solid $button_color;
+  box-sizing:border-box;
+  border-radius: 50px;
+  position: relative;
+  left: 16px;
+  cursor: pointer;
+  outline: none;
+}
+
+.delete-input-btn {
+  width:30px;
+  height:32px;
+  background:
+          linear-gradient($button_color,$button_color) top left,
+          linear-gradient($button_color,$button_color) top right,
+          linear-gradient($button_color,$button_color) top center,
+          linear-gradient($button_color,$button_color) bottom left,
+          linear-gradient($button_color,$button_color) bottom center,
+          linear-gradient($button_color,$button_color) bottom right;
+  background-size: calc(50% - 1px) calc(50% - 1px);
+  background-repeat:no-repeat;
+  border:10px solid $button_color;
+  box-sizing:border-box;
+  border-radius: 50px;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  left: 20px;
+}
+
+.input-for-image-additional {
+  margin-top: 8px;
+}

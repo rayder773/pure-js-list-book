@@ -20,10 +20,7 @@ const label = {
 };
 
 const setImage = (img) => {
-  if(!img) {
-    return image_404;
-  }
-  return (/^http/).test(img[0]) ? img : '';
+  return (/^http/).test(img) ? img : image_404;
 };
 
 let Home = {
@@ -40,10 +37,11 @@ let Home = {
               <div>${book.title || '-'}</div>
             </summary>
             <div class="book-content">
-              <button class="prev-img-btn" attr="${i}"> < </button>
+              <div class="prev-img-btn" attr="${i}"></div>
 <!--               //TODO-->
-              <img class="book-img" id="book-img-${i}" src="${setImage(book.img) || image_404}" /> 
-              <button class="next-img-btn" attr="${i}"> > </button>
+              <img class="book-img" id="book-img-${i}" src="${setImage(book.img[0])}" /> 
+              <div class="next-img-btn" attr="${i}">
+              </div>
               <div class="book-description">
                 <span>
                   <strong>${label.author}</strong> ${book.authors || '-'}
@@ -97,7 +95,9 @@ let Home = {
 
     const nextBtn = Array.from(document.getElementsByClassName('next-img-btn')).forEach(btn => {
       btn.addEventListener('click', async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
+
+        console.log('hello')
 
         const index = e.target.attributes.attr.value;
         const bookImageElement = document.getElementById(`book-img-${index}`)
@@ -106,16 +106,16 @@ let Home = {
         const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
 
         if(bookImageUrls.length - 1 > indexOfBook) {
-          bookImageElement.src = bookImageUrls[indexOfBook + 1]
+          bookImageElement.src = setImage(bookImageUrls[indexOfBook + 1])
         } else {
-          bookImageElement.src = bookImageUrls[0]
+          bookImageElement.src = setImage(bookImageUrls[0]);
         }
       })
     });
 
     const prevBtn = Array.from(document.getElementsByClassName('prev-img-btn')).forEach(btn => {
       btn.addEventListener('click', async (e) => {
-        e.preventDefault();
+        // e.preventDefault();
 
         const index = e.target.attributes.attr.value;
         const bookImageElement = document.getElementById(`book-img-${index}`)
@@ -124,9 +124,9 @@ let Home = {
         const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
 
         if(indexOfBook > 0) {
-          bookImageElement.src = bookImageUrls[indexOfBook - 1]
+          bookImageElement.src = setImage(bookImageUrls[indexOfBook - 1]);
         } else {
-          bookImageElement.src = bookImageUrls[bookImageUrls.length - 1]
+          bookImageElement.src = setImage(bookImageUrls[bookImageUrls.length - 1])
         }
       })
     });

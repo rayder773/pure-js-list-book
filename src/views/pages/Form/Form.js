@@ -32,37 +32,39 @@ let Form = {
     let isEdit = getIsEdit();
     return `
         <section class="section">
-          <form id="main-form"">
+          <form id="main-form">
             <div class="main-form-input-block">
               <label for="title">${label.name}</label>
-              <input id="title" name="title" class="group__input" required/>
+              <input id="title" name="title" required/>
             </div>
             <div class="main-form-input-block">
-              <label for="img">${label.imageUrl}</label>
-              <button id=${ids.addInput} type="button">+</button>
+              <label for="img">${label.imageUrl}</label>      
               <div id=${ids.inputForImage}>
-                <input id="img" name="img" class="input-for-image" />
+                <div class="input-for-image-main">
+                  <input id="img" name="img" class="input-for-image" />
+                  <button id=${ids.addInput} type="button"></button>
+                </div>
               </div>         
             </div>
             <div class="main-form-input-block">
               <label for="authors">${label.author}</label>
-              <input id="authors" name="authors" class="group__input" />
+              <input id="authors" name="authors" />
             </div>
             <div class="main-form-input-block">
                <label for="genre">${label.genre}</label>
-               <input id="genre" name="genre" class="group__input" />
+               <input id="genre" name="genre" />
             </div>
              <div class="main-form-input-block">
                <label for="publishing_date">${label.publishingDate}</label>
-               <input id="publishing_date" name="publishing_date" class="group__input" />
+               <input id="publishing_date" name="publishing_date" />
             </div>
             <div class="main-form-input-block">
                <label for="publishing_name">${label.publishingName}</label>
-               <input id="publishing_name" name="publishing_name" class="group__input" />
+               <input id="publishing_name" name="publishing_name" />
             </div>
             <div class="main-form-input-block">
                <label for="publishing_address">${label.publishingAddress}</label>
-               <input id="publishing_address" name="publishing_address" class="group__input" />
+               <input id="publishing_address" name="publishing_address" />
             </div>
             <div class="main-form-input-block">
                <label for="publishing_phone">${label.publishingPhone}</label>
@@ -92,9 +94,6 @@ let Form = {
         publishing_date: document.getElementById('publishing_date').value,
       };
 
-      // const imageValues = Array.from(document.getElementsByClassName('input-for-image'));
-      console.log(values)
-
       if (isEdit) {
         bookList[bookNumber] = values;
         setIsEdit(false);
@@ -123,14 +122,14 @@ let Form = {
       const newDiv = document.createElement('div');
 
       newInput.className = 'input-for-image';
-
-      newButton.textContent = '-';
       newButton.className = 'delete-input-btn';
       newButton.type = 'button';
       newButton.addEventListener('click', (e) => {
         const parent = e.target.parentElement;
         parent.remove();
       });
+
+      newDiv.className = 'input-for-image-additional';
       newDiv.append(newInput, newButton);
 
       inputForImageElement.append(newDiv);
@@ -141,7 +140,33 @@ let Form = {
       const book = bookList[bookNumber];
 
       for (let b in book) {
-        document.getElementById(b).value = book[b];
+        if (b === 'img') {
+          document.getElementById('img').value = book.img[0];
+          book.img.shift();
+          book[b].forEach(item => {
+            const inputForImageElement = document.getElementById(ids.inputForImage);
+            const newInput = document.createElement('input');
+            const newButton = document.createElement('button');
+            const newDiv = document.createElement('div');
+
+            newInput.className = 'input-for-image';
+
+            newInput.value = item;
+
+            newButton.textContent = '-';
+            newButton.className = 'delete-input-btn';
+            newButton.type = 'button';
+            newButton.addEventListener('click', (e) => {
+              const parent = e.target.parentElement;
+              parent.remove();
+            });
+            newDiv.append(newInput, newButton);
+
+            inputForImageElement.append(newDiv);
+          })
+        } else {
+          document.getElementById(b).value = book[b];
+        }
       }
     }
   }
