@@ -1,17 +1,28 @@
-import bookList from '../assets/bookList';
+import bookListFromJSON from '../assets/bookList';
+
+let bookList = null;
 
 /**
  * @returns {Booklist from LocalStore}
  */
 export const getBookList = () => {
-  return JSON.parse(localStorage.getItem('bookList'));
+  return bookList;
 };
 
 /**
  * @param {Array} list
  */
 export const setBookList = (list) => {
+  bookList = list;
   return localStorage.setItem('bookList', JSON.stringify(list));
+};
+
+/**
+ *
+ * @param {Array} list
+ */
+export const filterBookList = (list) => {
+  bookList = list;
 };
 
 /**
@@ -20,6 +31,6 @@ export const setBookList = (list) => {
 export const initDb = () => {
   const list = getBookList();
   if(list === null) {
-    setBookList(bookList);
+    setBookList(bookListFromJSON);
   }
 };

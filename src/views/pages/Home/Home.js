@@ -1,7 +1,9 @@
 import { getBookList } from '../../../services/db';
-import { getElementsByClassName } from '../../../services/dom-manipulations';
+import {getElementById, getElementsByClassName} from '../../../services/dom-manipulations';
 import {
-  DIRECTION, handleChangeImage,
+  DIRECTION,
+  handleChangeImage,
+  handleCheckboxClick,
   handleDeleteBook,
   handleEditBook,
   setImage
@@ -21,6 +23,14 @@ const label = {
   publishingName: 'Название издательства: ',
   publishingPhone: 'Контакты издательства: ',
   publishingAddress: 'Адрес издательства: ',
+  filterByName: 'Фильтровать по имени',
+};
+
+const setCheckBox = (i) => {
+  return `${i === 0 ? `<div>
+  <input type="checkbox" id="filter-by-name-checkbox" />
+  <label>${label.filterByName}</label>
+</div>` : ''}`
 };
 
 let Home = {
@@ -74,6 +84,9 @@ let Home = {
     const editBtn = getElementsByClassName('edit-btn').forEach(btn => handleEditBook(btn));
     const nextBtn = getElementsByClassName('next-img-btn').forEach(btn => handleChangeImage(btn, DIRECTION.next));
     const prevBtn = getElementsByClassName('prev-img-btn').forEach(btn => handleChangeImage(btn, DIRECTION.prev));
+
+    const filterByNameCheckboxElement = getElementById('filter-by-name-checkbox');
+    filterByNameCheckboxElement.addEventListener('click', (e) => handleCheckboxClick(e))
   }
 };
 

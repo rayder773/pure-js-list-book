@@ -1,5 +1,5 @@
 import {getAttributeValue, getElementById} from "../../../services/dom-manipulations";
-import {getBookList, setBookList} from "../../../services/db";
+import {filterBookList, getBookList, setBookList} from "../../../services/db";
 import {render} from "../../../services/render";
 import {FORM, goToRoute, HOME_COMPONENT} from "../../../services/goToRoute";
 import {setBookNumber, setIsEdit} from "../../../store";
@@ -100,6 +100,19 @@ export const handleChangeImage = (btn, direction) => {
         break;
     }
   })
+};
+
+export const handleCheckboxClick = async (e) => {
+  const isChecked = e.target.checked;
+  const bookList = getBookList();
+
+  if (isChecked) {
+    bookList.sort((a, b) => a.title.localeCompare(b.title));
+  } else {
+    bookList.sort((a, b) => b.title.localeCompare(a.title));
+  }
+  filterBookList(bookList);
+  await render(HOME_COMPONENT);
 };
 
 
