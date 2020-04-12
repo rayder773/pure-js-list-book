@@ -1,31 +1,33 @@
 import icon from '../../../assets/images/icon.png';
+import { getElementById } from "../../../services/dom-manipulations";
+import { getParsedUrl, handleHomeLinkClick } from "./eventHandlers";
+
 import './style.scss';
-import {setIsEdit} from "../../../store";
-import Utils from "../../../services/Utils";
 
 const linkNames = {
   main: 'Главная',
   form: 'Добавить новую книгу'
 };
 
+const label = {
+  filter: 'Фильтровать по названию'
+};
+
 const setFilter = () => {
-  let request = Utils.parseRequestURL();
-
-  let parsedURL = request.resource;
-
-  if(parsedURL.length !== 0) {
-    return 'display: none'
-  }
+  let parsedURL = getParsedUrl();
+  return parsedURL.length !== 0 ? 'display: none' : '';
 };
 
 let Navbar = {
   render: async () => {
     let view = `
             <nav class="nav-bar">
-              <img src=${icon} />
-               <div style="${setFilter()}">
-                <input type="checkbox" id="filter-by-name-checkbox" />
-                <label>filter</label>
+              <div>
+                <img src=${icon} />
+                 <div class="filter" style="${setFilter()}">
+                  <input type="checkbox" id="filter-by-name-checkbox" />
+                  <label>${label.filter}</label>
+                </div>
               </div>
               <div class="nav-bar-links">
                 <a href="/#/" id="home-link">${linkNames.main}</a>
@@ -36,14 +38,9 @@ let Navbar = {
     return view;
   },
   after_render: async () => {
-    document.getElementById('home-link').addEventListener('click', (e) => {
-      let request = Utils.parseRequestURL();
-      if(request.resource === 'form') {
-        setIsEdit(false);
-      }
-    });
+    const homeLink = getElementById('home-link');
+    homeLink.addEventListener('click', (e) => handleHomeLinkClick(e));
   }
-
 };
 
 export default Navbar;
