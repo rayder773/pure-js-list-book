@@ -28,7 +28,7 @@ let Navbar = {
       if(request.resource === 'form') {
         setIsEdit(false);
       }
-    })
+    });
   }
 
 };

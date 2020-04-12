@@ -1,4 +1,4 @@
-import {getIsEdit, getBookNumber, setIsEdit, setBookNumber} from "../../../store";
+import {getBookNumber, getIsEdit, setBookNumber, setIsEdit} from "../../../store";
 import {getBookList, setBookList} from "../../../services/db";
 
 import './style.scss';
@@ -15,14 +15,21 @@ const label = {
   publishingAddress: 'Адрес издательства',
 };
 
+const ids = {
+  form: 'main-form',
+  addInput: 'add-input-btn',
+  deleteInput: 'delete-input-btn',
+  inputForImage: 'input-for-image'
+};
+
 const createButton = 'Добавить книгу';
 const editButton = 'Сохранить изменения';
+
 
 let Form = {
 
   render: async () => {
     let isEdit = getIsEdit();
-    let bookList = getBookList();
     return `
         <section class="section">
           <form id="main-form"">
@@ -32,7 +39,10 @@ let Form = {
             </div>
             <div class="main-form-input-block">
               <label for="img">${label.imageUrl}</label>
-              <input id="img" name="img" class="group__input" />
+              <button id=${ids.addInput} type="button">+</button>
+              <div id=${ids.inputForImage}>
+                <input id="img" name="img" class="input-for-image" />
+              </div>         
             </div>
             <div class="main-form-input-block">
               <label for="authors">${label.author}</label>
@@ -70,9 +80,10 @@ let Form = {
 
     document.getElementById("main-form").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const imageValues = Array.from(document.getElementsByClassName('input-for-image')).map(img => img.value);
       const values = {
         title: document.getElementById('title').value,
-        img: document.getElementById('img').value,
+        img: imageValues,
         authors: document.getElementById('authors').value,
         genre: document.getElementById('genre').value,
         publishing_name: document.getElementById('publishing_name').value,
@@ -80,6 +91,9 @@ let Form = {
         publishing_phone: document.getElementById('publishing_phone').value,
         publishing_date: document.getElementById('publishing_date').value,
       };
+
+      // const imageValues = Array.from(document.getElementsByClassName('input-for-image'));
+      console.log(values)
 
       if (isEdit) {
         bookList[bookNumber] = values;
@@ -98,6 +112,28 @@ let Form = {
       setBookList(bookList);
       goToRoute(HOME);
 
+    });
+
+    document.getElementById(ids.addInput).addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const inputForImageElement = document.getElementById(ids.inputForImage);
+      const newInput = document.createElement('input');
+      const newButton = document.createElement('button');
+      const newDiv = document.createElement('div');
+
+      newInput.className = 'input-for-image';
+
+      newButton.textContent = '-';
+      newButton.className = 'delete-input-btn';
+      newButton.type = 'button';
+      newButton.addEventListener('click', (e) => {
+        const parent = e.target.parentElement;
+        parent.remove();
+      });
+      newDiv.append(newInput, newButton);
+
+      inputForImageElement.append(newDiv);
     });
 
     if (isEdit) {

@@ -21,6 +21,11 @@
   }
 }
 
+#input-for-image {
+  display: flex;
+  flex-direction: column;
+}
+
 
 #submit_btn {
   @include button();

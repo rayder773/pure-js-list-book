@@ -19,8 +19,11 @@ const label = {
   publishingAddress: 'Адрес издательства: ',
 };
 
-const setImage = (img, title) => {
-  return (/^http/).test(img) ? img : '';
+const setImage = (img) => {
+  if(!img) {
+    return image_404;
+  }
+  return (/^http/).test(img[0]) ? img : '';
 };
 
 let Home = {
@@ -38,7 +41,8 @@ let Home = {
             </summary>
             <div class="book-content">
               <button class="prev-img-btn" attr="${i}"> < </button>
-              <img class="book-img" id="book-img-${i}" src="${setImage(book.img[0], book.title) || image_404}" />
+<!--               //TODO-->
+              <img class="book-img" id="book-img-${i}" src="${setImage(book.img) || image_404}" /> 
               <button class="next-img-btn" attr="${i}"> > </button>
               <div class="book-description">
                 <span>
