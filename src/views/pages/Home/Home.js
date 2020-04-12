@@ -1,9 +1,19 @@
 import { setIsEdit, setBookNumber } from "../../../store";
 import {getBookList, setBookList} from "../../../services/db";
-import { FORM, goToRoute } from "../../../services/goToRoute";
+import {FORM, goToRoute, HOME_COMPONENT} from "../../../services/goToRoute";
 import image_404 from '../../../assets/images/image_404.jpg';
 
 import './style.scss';
+import {render} from "../../../services/render";
+import {getAttributeValue, getElementById, getElementsByClassName} from "../../../services/dom-manipulations";
+import {
+  DIRECTION, handleChangeImage,
+  handleDeleteBook,
+  handleEditBook,
+  handleNextImageButton,
+  handlePrevImageButton,
+  setImage
+} from "./eventHandlers";
 
 const buttonNames = {
   delete: 'Удалить',
@@ -19,13 +29,9 @@ const label = {
   publishingAddress: 'Адрес издательства: ',
 };
 
-const setImage = (img) => {
-  return (/^http/).test(img) ? img : image_404;
-};
-
 let Home = {
   render: async () => {
-    let books = await getBookList();
+    let books = getBookList();
 
     let view = ``;
 
@@ -34,11 +40,10 @@ let Home = {
         <div class="book-section">
           <details>
             <summary>
-              <div>${book.title || '-'}</div>
+              <div>${book.title}</div>
             </summary>
             <div class="book-content">
               <div class="prev-img-btn" attr="${i}"></div>
-<!--               //TODO-->
               <img class="book-img" id="book-img-${i}" src="${setImage(book.img[0])}" /> 
               <div class="next-img-btn" attr="${i}">
               </div>
@@ -71,67 +76,11 @@ let Home = {
     return view;
   },
   after_render: async () => {
-    const bookList = getBookList();
-
-    const closeButtons = Array.from(document.getElementsByClassName('delete-btn')).forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-        const index = e.target.attributes.attr.value;
-        bookList.splice(index, 1);
-        setBookList(bookList);
-        document.getElementById('page_container').innerHTML = await Home.render();
-        await Home.after_render();
-      })
-    });
-
-    const editBtn = Array.from(document.getElementsByClassName('edit-btn')).forEach(item => {
-      item.addEventListener('click', (e) => {
-        const index = e.target.attributes.attr.value;
-        setBookNumber(index);
-        setIsEdit(true);
-        goToRoute(FORM);
-      })
-    });
-
-    const nextBtn = Array.from(document.getElementsByClassName('next-img-btn')).forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        // e.preventDefault();
-
-        console.log('hello')
-
-        const index = e.target.attributes.attr.value;
-        const bookImageElement = document.getElementById(`book-img-${index}`)
-        const bookImageUrls = bookList[index].img;
-
-        const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
-
-        if(bookImageUrls.length - 1 > indexOfBook) {
-          bookImageElement.src = setImage(bookImageUrls[indexOfBook + 1])
-        } else {
-          bookImageElement.src = setImage(bookImageUrls[0]);
-        }
-      })
-    });
-
-    const prevBtn = Array.from(document.getElementsByClassName('prev-img-btn')).forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        // e.preventDefault();
-
-        const index = e.target.attributes.attr.value;
-        const bookImageElement = document.getElementById(`book-img-${index}`)
-        const bookImageUrls = bookList[index].img;
-
-        const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
-
-        if(indexOfBook > 0) {
-          bookImageElement.src = setImage(bookImageUrls[indexOfBook - 1]);
-        } else {
-          bookImageElement.src = setImage(bookImageUrls[bookImageUrls.length - 1])
-        }
-      })
-    });
+    const deleteButtons = getElementsByClassName('delete-btn').forEach(btn => handleDeleteBook(btn));
+    const editBtn = getElementsByClassName('edit-btn').forEach(btn => handleEditBook(btn));
+    const nextBtn = getElementsByClassName('next-img-btn').forEach(btn => handleChangeImage(btn, DIRECTION.next));
+    const prevBtn = getElementsByClassName('prev-img-btn').forEach(btn => handleChangeImage(btn, DIRECTION.prev));
   }
-
-}
+};
 
 export default Home;
