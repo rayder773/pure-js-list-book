@@ -1,4 +1,4 @@
-import {getAttributeValue, getElementById} from "../../../services/dom-manipulations";
+import {getAttributeValue, getElementById} from "../../../services/domManipulation";
 import {filterBookList, getBookList, setBookList} from "../../../services/db";
 import {render} from "../../../services/render";
 import {FORM, goToRoute, HOME_COMPONENT} from "../../../services/goToRoute";
@@ -73,18 +73,21 @@ export const handleChangeImage = (btn, direction) => {
     const bookImageUrls = bookList[index].img;
 
     let indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
-    if(indexOfBook === -1) {
-      indexOfBook = lastImageIndex + 1;
-    }
-    lastImageIndex++;
-    if (lastImageIndex > bookImageUrls.length - 1) {
-      lastImageIndex = 0
-    }
 
     switch (direction) {
       case DIRECTION.next:
+        if(indexOfBook === -1 && lastImageIndex !== 0) {
+          indexOfBook = lastImageIndex + 1;
+        } else if(indexOfBook === -1) {
+          indexOfBook = 0;
+        }
+
+        lastImageIndex++;
+        if (lastImageIndex > bookImageUrls.length - 1) {
+          lastImageIndex = 0
+        }
+
         if(bookImageUrls.length - 1 > indexOfBook) {
-          console.log(lastImageIndex, indexOfBook)
           bookImageElement.src = setImage(bookImageUrls[indexOfBook + 1])
         } else {
           bookImageElement.src = setImage(bookImageUrls[0]);
@@ -92,6 +95,15 @@ export const handleChangeImage = (btn, direction) => {
         break;
 
       case DIRECTION.prev:
+        if(indexOfBook === -1) {
+          indexOfBook = lastImageIndex - 1;
+        }
+
+        lastImageIndex--;
+        if (lastImageIndex === 0) {
+          lastImageIndex = bookImageUrls.length - 1
+        }
+
         if(indexOfBook > 0) {
           bookImageElement.src = setImage(bookImageUrls[indexOfBook - 1]);
         } else {

@@ -1,7 +1,7 @@
 import { getBookNumber, getIsEdit, setBookNumber, setIsEdit } from '../../../store';
 import { getBookList, setBookList } from '../../../services/db';
 import { goToRoute, HOME } from '../../../services/goToRoute';
-import {createElement, getElementById, getElementsByClassName} from '../../../services/dom-manipulations';
+import {createElement, getElementById, getElementsByClassName} from '../../../services/domManipulation';
 import {ids} from "./Form";
 
 /**

@@ -1,5 +1,5 @@
 import icon from '../../../assets/images/icon.png';
-import { getElementById } from "../../../services/dom-manipulations";
+import { getElementById } from "../../../services/domManipulation";
 import { getParsedUrl, handleHomeLinkClick } from "./eventHandlers";
 
 import './style.scss';
@@ -25,7 +25,7 @@ let Navbar = {
               <div>
                 <img src=${icon} />
                  <div class="filter" style="${setFilter()}">
-                  <input type="checkbox" id="filter-by-name-checkbox" />
+                  <input type="checkbox" id="filter-by-name-checkbox"  />
                   <label>${label.filter}</label>
                 </div>
               </div>

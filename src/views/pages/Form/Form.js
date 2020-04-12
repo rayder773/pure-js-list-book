@@ -1,10 +1,9 @@
-import {getBookNumber, getIsEdit, setBookNumber, setIsEdit} from "../../../store";
-import {getBookList, setBookList} from "../../../services/db";
+import { getBookNumber, getIsEdit } from "../../../store";
+import { getBookList } from "../../../services/db";
 
 import './style.scss';
-import {goToRoute, HOME} from "../../../services/goToRoute";
-import {handleAddInputButton, handleSubmit, insertContainerWithInput} from "./eventHandlers";
-import {getElementById} from "../../../services/dom-manipulations";
+import { handleAddInputButton, handleSubmit, insertContainerWithInput } from "./eventHandlers";
+import { getElementById } from "../../../services/domManipulation";
 
 const label = {
   name: 'Название',
