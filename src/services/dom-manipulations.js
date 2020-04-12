@@ -19,8 +19,17 @@ export const getElementsByClassName = (cl) => {
 /**
  *
  * @param {Event} event
- * @returns {*}
+ * @returns {String}
  */
 export const getAttributeValue = (event) => {
   return event.target.attributes.attr.value;
+};
+
+/**
+ *
+ * @param {String} element
+ * @returns {HTMLElement}
+ */
+export const createElement = (element) => {
+  return document.createElement(element);
 };

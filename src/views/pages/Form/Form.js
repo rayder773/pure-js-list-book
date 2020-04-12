@@ -3,6 +3,8 @@ import {getBookList, setBookList} from "../../../services/db";
 
 import './style.scss';
 import {goToRoute, HOME} from "../../../services/goToRoute";
+import {handleAddInputButton, handleSubmit, insertContainerWithInput} from "./eventHandlers";
+import {getElementById} from "../../../services/dom-manipulations";
 
 const label = {
   name: 'Название',
@@ -15,7 +17,7 @@ const label = {
   publishingAddress: 'Адрес издательства',
 };
 
-const ids = {
+export const ids = {
   form: 'main-form',
   addInput: 'add-input-btn',
   deleteInput: 'delete-input-btn',
@@ -24,7 +26,6 @@ const ids = {
 
 const createButton = 'Добавить книгу';
 const editButton = 'Сохранить изменения';
-
 
 let Form = {
 
@@ -78,95 +79,29 @@ let Form = {
   after_render: async () => {
     let isEdit = getIsEdit();
     const bookList = getBookList();
-    let bookNumber = getBookNumber();
 
-    document.getElementById("main-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const imageValues = Array.from(document.getElementsByClassName('input-for-image')).map(img => img.value);
-      const values = {
-        title: document.getElementById('title').value,
-        img: imageValues,
-        authors: document.getElementById('authors').value,
-        genre: document.getElementById('genre').value,
-        publishing_name: document.getElementById('publishing_name').value,
-        publishing_address: document.getElementById('publishing_address').value,
-        publishing_phone: document.getElementById('publishing_phone').value,
-        publishing_date: document.getElementById('publishing_date').value,
-      };
+    //listen form submit
+    const form = getElementById('main-form');
+    form.addEventListener('submit', (e) => handleSubmit(e));
 
-      if (isEdit) {
-        bookList[bookNumber] = values;
-        setIsEdit(false);
-        setBookNumber(null);
-      } else {
-        bookList.push({
-          ...values,
-        });
-      }
+    //listen add input button
+    const addInputButton = getElementById(ids.addInput);
+    addInputButton.addEventListener('click', (e) => handleAddInputButton(e));
 
-      for (let item in values) {
-        document.getElementById(item).value = '';
-      }
-
-      setBookList(bookList);
-      goToRoute(HOME);
-
-    });
-
-    document.getElementById(ids.addInput).addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const inputForImageElement = document.getElementById(ids.inputForImage);
-      const newInput = document.createElement('input');
-      const newButton = document.createElement('button');
-      const newDiv = document.createElement('div');
-
-      newInput.className = 'input-for-image';
-      newButton.className = 'delete-input-btn';
-      newButton.type = 'button';
-      newButton.addEventListener('click', (e) => {
-        const parent = e.target.parentElement;
-        parent.remove();
-      });
-
-      newDiv.className = 'input-for-image-additional';
-      newDiv.append(newInput, newButton);
-
-      inputForImageElement.append(newDiv);
-    });
-
+    //if isEdit === true - create filled inputs with links
     if (isEdit) {
       let bookNumber = getBookNumber();
       const book = bookList[bookNumber];
 
       for (let b in book) {
         if (b === 'img') {
-          document.getElementById('img').value = book.img[0];
+          getElementById('img').value = book.img[0];
           book.img.shift();
           book[b].forEach(item => {
-            const inputForImageElement = document.getElementById(ids.inputForImage);
-            const newInput = document.createElement('input');
-            const newButton = document.createElement('button');
-            const newDiv = document.createElement('div');
-
-            newInput.className = 'input-for-image';
-
-            newInput.value = item;
-
-            newButton.textContent = '-';
-            newButton.className = 'delete-input-btn';
-            newButton.type = 'button';
-            newButton.addEventListener('click', (e) => {
-              const parent = e.target.parentElement;
-              parent.remove();
-            });
-            newDiv.className = 'input-for-image-additional';
-            newDiv.append(newInput, newButton);
-
-            inputForImageElement.append(newDiv);
+            insertContainerWithInput(item);
           })
         } else {
-          document.getElementById(b).value = book[b];
+          getElementById(b).value = book[b];
         }
       }
     }

@@ -1,19 +1,13 @@
-import { setIsEdit, setBookNumber } from "../../../store";
-import {getBookList, setBookList} from "../../../services/db";
-import {FORM, goToRoute, HOME_COMPONENT} from "../../../services/goToRoute";
-import image_404 from '../../../assets/images/image_404.jpg';
-
-import './style.scss';
-import {render} from "../../../services/render";
-import {getAttributeValue, getElementById, getElementsByClassName} from "../../../services/dom-manipulations";
+import { getBookList } from '../../../services/db';
+import { getElementsByClassName } from '../../../services/dom-manipulations';
 import {
   DIRECTION, handleChangeImage,
   handleDeleteBook,
   handleEditBook,
-  handleNextImageButton,
-  handlePrevImageButton,
   setImage
-} from "./eventHandlers";
+} from './eventHandlers';
+
+import './style.scss';
 
 const buttonNames = {
   delete: 'Удалить',
@@ -37,17 +31,17 @@ let Home = {
 
     books.forEach((book, i) => {
       view += `
-        <div class="book-section">
+        <div class='book-section'>
           <details>
             <summary>
               <div>${book.title}</div>
             </summary>
-            <div class="book-content">
-              <div class="prev-img-btn" attr="${i}"></div>
-              <img class="book-img" id="book-img-${i}" src="${setImage(book.img[0])}" /> 
-              <div class="next-img-btn" attr="${i}">
+            <div class='book-content'>
+              <div class='prev-img-btn' attr='${i}'></div>
+              <img class='book-img' id='book-img-${i}' src='${setImage(book.img[0])}' /> 
+              <div class='next-img-btn' attr='${i}'>
               </div>
-              <div class="book-description">
+              <div class='book-description'>
                 <span>
                   <strong>${label.author}</strong> ${book.authors || '-'}
                 </span>
@@ -63,9 +57,9 @@ let Home = {
                 <span>
                   <strong>${label.publishingPhone}</strong> ${book.publishing_phone || '-'}
                 </span>
-                <span class="book-content-buttons">
-                  <div class="edit-btn" attr=${i}>${buttonNames.edit}</div>
-                  <div class="delete-btn" attr=${i}>${buttonNames.delete}</div>
+                <span class='book-content-buttons'>
+                  <div class='edit-btn' attr=${i}>${buttonNames.edit}</div>
+                  <div class='delete-btn' attr=${i}>${buttonNames.delete}</div>
                 </span>
               </div>
             </div>
