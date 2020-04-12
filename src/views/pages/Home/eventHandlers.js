@@ -63,6 +63,7 @@ export const handleEditBook = (btn) => {
  * @param {String} direction
  */
 export const handleChangeImage = (btn, direction) => {
+  let lastImageIndex = 0;
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     const bookList = getBookList();
@@ -71,11 +72,19 @@ export const handleChangeImage = (btn, direction) => {
     const bookImageElement = getElementById(`book-img-${index}`);
     const bookImageUrls = bookList[index].img;
 
-    const indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
+    let indexOfBook = bookImageUrls.indexOf(bookImageElement.src);
+    if(indexOfBook === -1) {
+      indexOfBook = lastImageIndex + 1;
+    }
+    lastImageIndex++;
+    if (lastImageIndex > bookImageUrls.length - 1) {
+      lastImageIndex = 0
+    }
 
     switch (direction) {
       case DIRECTION.next:
         if(bookImageUrls.length - 1 > indexOfBook) {
+          console.log(lastImageIndex, indexOfBook)
           bookImageElement.src = setImage(bookImageUrls[indexOfBook + 1])
         } else {
           bookImageElement.src = setImage(bookImageUrls[0]);
